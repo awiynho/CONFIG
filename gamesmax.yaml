@@ -1,0 +1,153 @@
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+tproxy-port: 7895
+ipv6: false
+mode: rule
+log-level: silent
+allow-lan: true
+external-controller: 0.0.0.0:9090
+secret: ""
+bind-address: "*"
+unified-delay: true
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+dns:
+  enable: true
+  ipv6: false
+  use-host: true
+  enhanced-mode: fake-ip
+  listen: 0.0.0.0:7874
+  nameserver:
+    - 8.8.8.8
+    - 8.8.4.4
+
+proxies:
+  - name: ADN Telecom (BD)
+    type: vless
+    server: ir.huya.com
+    port: 80
+    uuid: 472c3ea2-f8c2-4afc-a529-3b66386df93c
+    encryption: none
+    network: ws
+    security: none
+    ws-opts:
+      path: /103.81.172.34=443
+      headers:
+        Host: mediafairy.us.kg
+    sni: mediafairy.us.kg
+
+  - name: Nimo Akamai Connected Cloud 🇮🇩
+    type: vless
+    server: cf-vod.nimo.tv
+    port: 80
+    uuid: fbf749b5-9106-43a4-9518-7febc4525e29
+    encryption: none
+    network: ws
+    security: none
+    ws-opts:
+      path: /Novan-ID6
+      headers:
+        Host: open-jasa-paid.workerz.site
+    sni: open-jasa-paid.workerz.site
+    fingerprint: randomized
+
+  - name: Gamemax+ID+Amazon 🇮🇩
+    type: vless
+    server: ir.huya.com
+    port: 80
+    uuid: 6dec55a9-b7da-4e28-8a23-bc6af30c4cb3
+    cipher: none
+    tls: false
+    network: ws
+    ws-opts:
+      path: "/Novan-ID2"
+      headers:
+        Host: Open-jasa-paid.workerz.site
+
+  - name: Huya Akamai Connected Cloud 🇮🇩
+    type: vless
+    server: ir.huya.com
+    port: 80
+    uuid: fbf749b5-9106-43a4-9518-7febc4525e29
+    cipher: none
+    tls: false
+    network: ws
+    ws-opts:
+      path: "/Novan-ID6"
+      headers:
+        Host: bakrie.ac.id.open-jasa-paid.workerz.site
+      sni: bakrie.ac.id.open-jasa-paid.workerz.site
+
+  - name: Cloudflare Inc (US)
+    type: vless
+    server: cf-vod.nimo.tv
+    port: 80
+    uuid: d4ea735e-c832-45ef-beda-767c10501995
+    cipher: none
+    tls: false
+    network: ws
+    ws-opts:
+      path: "/172.67.22.129=80"
+      headers:
+        Host: mediafairy.us.kg
+      sni: mediafairy.us.kg
+
+  - name: VLESS OPOK (bonus)
+    type: vless
+    server: app-stg.gopay.co.id
+    port: 443
+    uuid: 0738294b-2a61-4d20-a2c1-923179443e1a
+    cipher: none
+    tls: true
+    network: ws
+    ws-opts:
+      path: "/vl=139.180.136.178=29806"
+      headers:
+        Host: gp.gpj.us.kg
+      sni: gp.gpj.us.kg
+
+proxy-groups:
+  - name: "Proxy"
+    type: fallback
+    url: http://www.google.com/generate_204
+    interval: 300
+    proxies:
+      - ADN Telecom (BD)
+      - Nimo Akamai Connected Cloud 🇮🇩
+      - Gamemax+ID+Amazon 🇮🇩
+      - Huya Akamai Connected Cloud 🇮🇩
+      - Cloudflare Inc (US)
+      - VLESS OPOK (bonus)
+
+rules:
+  - DOMAIN-SUFFIX,*.google.*,Proxy
+  - DOMAIN-KEYWORD,facebook,Proxy
+  - DOMAIN-SUFFIX,*.github.*,Proxy
+  - DOMAIN,web.whatsapp.com,Proxy
+  - DOMAIN-SUFFIX,whatsapp.com,Proxy
+  - DOMAIN-SUFFIX,whatsapp.net,Proxy
+  - DOMAIN,web.imomessenger.com,Proxy
+  - DOMAIN-SUFFIX,imomessenger.com,Proxy
+  - MATCH,Proxy
+
+auto-reconnect: true
+reconnect-interval: 5 # interval dalam detik
+
+caching:
+  enabled: true
+  cache_size: 200MB
+  cache_ttl: 1h
+  path:
+    - /whatsapp/video-call/*
+    - /facebook/video-call/*
+    - /imo/video-call/*
+    - /telegram/video-call/*
+  uri:
+    - https://bakrie.ac.id/whatsapp/video-call/*
+    - https://bakrie.ac.id/facebook/video-call/*
+    - https://bakrie.ac.id/imo/video-call/*
+    - https://bakrie.ac.id/telegram/video-call/*
